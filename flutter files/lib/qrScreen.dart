@@ -152,16 +152,16 @@ class qrScreenState extends State<qrScreen> {
 
           //implement database
           bool existingUser = false;
-          int currentPoints;
-          String name;
+          int currentPoints = 0;
+          String name = "Name";
 
           try {
             final docRef2 = db.collection("Leaderboard");
 
-            var doc = await docRef2.document(getUserID()).get().then((DocumentSnapshot doc) {
+            var doc = await docRef2.doc(getUserID().toString()).get().then((DocumentSnapshot doc) {
               final data = doc.data() as Map<String, dynamic>;
-              currentPoints = data["points"]
-              name = data["name"]
+              currentPoints = data["points"];
+              name = data["name"];
             },onError: (e) => print("Error getting document: $e")
             );
             existingUser = true;
@@ -178,7 +178,7 @@ class qrScreenState extends State<qrScreen> {
             "points":newPoints
           };
 
-          await db.collection("Leaderboard").doc(getUserID()).set(leaderboardEntry).onError((e, _) => print("Error writing document: $e"));
+          await db.collection("Leaderboard").doc(getUserID().toString()).set(leaderboardEntry).onError((e, _) => print("Error writing document: $e"));
         } else {
           print("QR code scanned already");
           //Sian add some nice error message / popup
@@ -190,7 +190,5 @@ class qrScreenState extends State<qrScreen> {
     return 69; // nice
   }
 
-  String getUserName() {
-    
-  } 
+
 }
