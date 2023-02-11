@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                  child: const Text('QR-Newable',
+                  child: const Text('GreenPoints',
                       style: TextStyle(
                           fontSize: 40, color: Colors.green))
                   ),
