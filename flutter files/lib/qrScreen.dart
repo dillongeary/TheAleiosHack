@@ -22,9 +22,12 @@ class qrScreenState extends State<qrScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   void _onQRViewCreated(QRViewController controller) {
-    setState(() => this.controller = controller);
+    this.controller = controller;
+    controller.resumeCamera();
     controller.scannedDataStream.listen((scanData) {
-      setState(() => result = scanData);
+      setState(() {
+        result = scanData;
+      });
     });
   }
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -42,7 +45,7 @@ class qrScreenState extends State<qrScreen> {
   void readQr() async {
     if (result != null) {
       controller!.pauseCamera();
-      print(result!.code);
+      processQRCode(result!.code);
       controller!.dispose();
     }
   }
@@ -69,5 +72,9 @@ class qrScreenState extends State<qrScreen> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  void processQRCode(String? code) {
+    //code holds the number eg 5
   }
 }
