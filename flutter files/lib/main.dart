@@ -12,19 +12,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hackathon',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(title: 'Hackathon project'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -35,16 +30,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.green
+                onSurface: Colors.green,
+                primary: Colors.green,
               ),
               onPressed: () {
                 Navigator.push(
@@ -54,8 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           qrScreen()
                     ));
               },
-              child: const Text('Scan'),
-            ),
+        child: Text(
+          "Scan",
+          style: TextStyle(
+              fontSize: 40, color: Colors.white),
+        ))
           ],
         ),
       ),
