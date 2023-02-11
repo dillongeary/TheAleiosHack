@@ -22,3 +22,20 @@ class leaderboardScreenState extends State<leaderboardScreen> {
   }
 }
 
+
+  
+  Map<String, int> getLeaderboard() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    Map<String, int> lb = new Map();
+    final docRef = db.collection("Leaderboard").docs();
+    await docRef.get().then((var doc) {
+      for (var i; doc) {
+        final data = i.data() as Map<String, dynamic>;
+        name = data["name"];
+        points = data["points"];
+        lb[name] = points;
+      } 
+    },onError: (e) => print("Error getting document: $e")
+    );
+    return lb
+  }
