@@ -13,6 +13,8 @@ class leaderboardScreen extends StatefulWidget {
 
 class leaderboardScreenState extends State<leaderboardScreen> {
   Map<String, int> lb = new Map();
+  List names = [];
+  List points = [];
   bool _loading = true;
 
   @override
@@ -30,9 +32,24 @@ class leaderboardScreenState extends State<leaderboardScreen> {
                     Colors.blue), //choose your own color
               ))
             : Container(
-          child: Row(
-          ),
-        ));
+          child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: names.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 50,
+                  margin: EdgeInsets.all(2),
+                  child: Center(
+                      child: Text('${names[index]}: ${points[index]}',
+                        style: TextStyle(fontSize: 18),
+                      )
+                  ),
+                );
+              }
+          )
+          )
+    );
+
   }
 
   void getLeaderboard() async {
@@ -53,12 +70,11 @@ class leaderboardScreenState extends State<leaderboardScreen> {
     LinkedHashMap<String, int> sortedMap = new LinkedHashMap.fromIterable(sortedKeys, key: (k) => k, value: (k) => lb[k]!);
     lb = sortedMap;
 
-    List names = sortedMap.keys.toList();
-    List points = new List;
-    for (i in names) {
+    names = sortedMap.keys.toList();
+
+    for (String i in names) {
       points.add(sortedMap[i]);
     }
-    print(lb);
 
     setState((){
       _loading = false;
