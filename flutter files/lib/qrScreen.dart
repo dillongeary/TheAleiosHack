@@ -184,24 +184,11 @@ class qrScreenState extends State<qrScreen> {
           //Sian add some nice error message / popup
         }
       }
+      Navigator.pop(context);
   }
 
   int getUserID() {
     return 69; // nice
-  }
-
-  int getUsersScore() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    try {
-      final docRef = db.collection("Leaderboard").doc(getUserID().toString());
-      await docRef.get().then((DocumentSnapshot) {
-        final data = doc.data() as Map<String, dynamic>;
-        return data["points"];
-      },onError: (e) => print("Error getting document: $e")
-      );
-    } catch (e) {
-      return 0;
-    }
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'leaderboardScreen.dart';
@@ -39,6 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
   int score = 0;
 
   @override
+  void initState(){
+    super.initState();
+    getUsersScore();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
@@ -69,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => qrScreen()));
+                                  getUsersScore();
                               },
                               child: Text(
                                 "Scan",
@@ -128,5 +136,25 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         )
     );
+  }
+
+  void getUsersScore() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    int newScore = 0;
+    try {
+      final docRef = db.collection("Leaderboard").doc(getUserID().toString());
+      await docRef.get().then((DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        newScore = data["points"];
+      },onError: (e) => print("Error getting document: $e")
+      );
+    } catch (e) {
+    }
+    setState((){
+      score = newScore;
+    });
+  }
+  int getUserID() {
+    return 69; // nice
   }
 }
