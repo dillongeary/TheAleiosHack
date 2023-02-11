@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,11 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:collection/collection.dart';
 
 class qrScreen extends StatefulWidget {
-
-
-  qrScreen(
-      {Key? key})
-      : super(key: key);
+  qrScreen({Key? key}) : super(key: key);
 
   @override
   State<qrScreen> createState() => qrScreenState();
@@ -33,6 +28,7 @@ class qrScreenState extends State<qrScreen> {
       });
     });
   }
+
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
