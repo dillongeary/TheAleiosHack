@@ -73,8 +73,7 @@ class qrScreenState extends State<qrScreen> {
     super.dispose();
   }
 
-  void processQRCode(String? code) {
-    async{
+  void processQRCode(String? code) async {
       //code holds the number eg 5
 
       //"Starbucks",15612,"Vegan Milk","Reusable Cup"
@@ -117,7 +116,7 @@ class qrScreenState extends State<qrScreen> {
         //   if ()
         // }
 
-        final docRef1 = db.collection("QRC Log").doc(getUserID())
+        final docRef1 = db.collection("QRC Log").doc(getUserID().toString());
           await docRef1.get().then((DocumentSnapshot doc) {
             final data = doc.data() as Map<String, dynamic>;
             if (data[qrid] == null) {
@@ -133,9 +132,9 @@ class qrScreenState extends State<qrScreen> {
         
         if (validQR) {
           final qrscan = <String, DateTime>{
-            qrid:date
+            qrid as String:date
           };
-          await db.collection("QRC Log").doc(getUserID()).set(qrscan, SetOptions(merge:true));
+          await db.collection("QRC Log").doc(getUserID() as String).set(qrscan, SetOptions(merge:true));
         
 
           final docRef = db.collection("PointsLookupTable").doc(location);
@@ -152,7 +151,6 @@ class qrScreenState extends State<qrScreen> {
         }
         print(total);
       }
-    }
   }
 
   int getUserID() {
