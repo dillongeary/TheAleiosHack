@@ -14,7 +14,6 @@ void main() async {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -30,8 +29,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
-
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -40,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int score = 0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getUsersScore();
   }
@@ -55,12 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(
-                    alignment: Alignment.center,
-                  child: const Text('GreenPoints',
-                      style: TextStyle(
-                          fontSize: 40, color: Colors.green))
-                  ),
-
+                      alignment: Alignment.center,
+                      child: const Text('GreenPoints',
+                          style: TextStyle(fontSize: 40, color: Colors.green))),
                   Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -72,13 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 primary: Colors.green,
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => qrScreen()));
-                                setState((){
-                                  getUsersScore();
-                                });
+                                qrScreenWait();
                               },
                               child: Text(
                                 "Scan",
@@ -120,7 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => leaderboardScreen()));
+                                        builder: (context) =>
+                                            leaderboardScreen()));
                               },
                               child: Text(
                                 "Leaderboard",
@@ -129,15 +118,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               )))),
                   Align(
                       alignment: Alignment.center,
-                              child: Text(
-                                ("Score: " + score.toString()),
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                              )),
-                ]
-            )
-        )
-    );
+                      child: Text(
+                        ("Score: " + score.toString()),
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      )),
+                ])));
   }
 
   void getUsersScore() async {
@@ -148,15 +133,21 @@ class _MyHomePageState extends State<MyHomePage> {
       await docRef.get().then((DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         newScore = data["points"];
-      },onError: (e) => print("Error getting document: $e")
-      );
-    } catch (e) {
-    }
-    setState((){
-      score = newScore;
-    });
+      }, onError: (e) => print("Error getting document: $e"));
+    } catch (e) {}
   }
+
   int getUserID() {
     return 69; // nice
+  }
+
+  void qrScreenWait() async {
+    int result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => qrScreen()));
+    setState(() {
+      if (result != -1){
+        score = result;
+      }
+    });
   }
 }

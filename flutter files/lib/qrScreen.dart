@@ -75,7 +75,7 @@ class qrScreenState extends State<qrScreen> {
 
   void processQRCode(String? code) async {
       //code holds the number eg 5
-
+      int newPoints = -1;
       //"Starbucks",15612,"Vegan Milk","Reusable Cup"
       if (code != null) {
         //decoding the qr code
@@ -171,7 +171,7 @@ class qrScreenState extends State<qrScreen> {
             name = "Name";
           }
 
-          int newPoints = currentPoints + total;
+          newPoints = currentPoints + total;
 
           final leaderboardEntry = <String,dynamic>{
             "name":name,
@@ -184,7 +184,7 @@ class qrScreenState extends State<qrScreen> {
           //Sian add some nice error message / popup
         }
       }
-      Navigator.pop(context);
+      Navigator.pop(context, newPoints);
   }
 
   int getUserID() {
