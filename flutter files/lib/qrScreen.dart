@@ -134,7 +134,12 @@ class qrScreenState extends State<qrScreen> {
           final qrscan = <String, DateTime>{
             qrid as String:date
           };
-          await db.collection("QRC Log").doc(getUserID() as String).set(qrscan, SetOptions(merge:true));
+
+          final qrcRef = db.collection("QRC Log").doc(getUserID() as String);
+          await qrcRef.update({qrid:String:date}).then(
+            (value) => print("DocumentSnapshot successfully updated!"),
+            onError: (e) => print("Error updating document $e"));
+          
         
 
           final docRef = db.collection("PointsLookupTable").doc(location);
