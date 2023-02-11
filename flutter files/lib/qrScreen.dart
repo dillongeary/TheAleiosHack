@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:collection/collection.dart';
 
 class qrScreen extends StatefulWidget {
 
@@ -75,6 +78,88 @@ class qrScreenState extends State<qrScreen> {
   }
 
   void processQRCode(String? code) {
-    //code holds the number eg 5
+    async{
+      //code holds the number eg 5
+
+      //"Starbucks",15612,"Vegan Milk","Reusable Cup"
+      if (code != null) {
+        //decoding the qr code
+        final split = code.split(",");
+        final Map<int, String> values = {
+          for (int i = 0; i < split.length; i++) i: split[i]
+        };
+
+        final location = values[0];
+        final qrid = values[1];
+
+        int i = 2;
+        List variables = [];
+        while (true) {
+          if (values[i] == null) {
+            break;
+          } else {
+            variables.add(values[i]);
+            i = i + 1;
+          }
+        }
+
+        final now = new DateTime.now();
+        final date = new DateTime(now.year, now.month, now.day);
+
+        FirebaseFirestore db = FirebaseFirestore.instance;
+
+        //checking for valid scan
+        bool validQR = false;
+        // if (variables.contains("bike")) {
+        //   final docRef1 = db.collection("QRC Log").doc(getUserID())
+        //   await docRef1.get().then((DocumentSnapshot doc) {
+        //     final data = doc.data() as Map<String, dynamic>;
+        //     if (data[qrid] == null) {
+        //       validQR = true;
+        //     } else if ()
+        //   })
+        //   if ()
+        // }
+
+        final docRef1 = db.collection("QRC Log").doc(getUserID())
+          await docRef1.get().then((DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            if (data[qrid] == null) {
+              validQR = true;
+              // Add this qr to the db
+            } else {
+              validQR = false;
+            }
+          },onError: (e) => print("Error getting document: $e")
+          );
+
+        int total;
+        
+        if (validQR) {
+          final qrscan = <String, DateTime>{
+            qrid:date
+          };
+          await db.collection("QRC Log").doc(getUserID()).set(qrscan, SetOptions(merge:true));
+        
+
+          final docRef = db.collection("PointsLookupTable").doc(location);
+          List<int> points = [];
+          await docRef.get().then((DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            points = variables.map((variable) => data[variable] as int).toList();
+          },onError: (e) => print("Error getting document: $e")
+          );
+
+          total = points.sum;
+        } else {
+          total = -1;
+        }
+        print(total);
+      }
+    }
+  }
+
+  int getUserID() {
+    return 69; // nice
   }
 }
