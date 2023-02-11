@@ -49,12 +49,13 @@ class Splash extends State<SplashScreen>  {
                 builder: (BuildContext context) => mainScreen())));
 
     var assetsImage = new AssetImage(
-        'images/new_logo.png'); //<- Creates an object that fetches an image.
+        'assets/erica.png');
     var image = new Image(
         image: assetsImage,
-        height:300); //<- Creates a widget that displays an image.
+        height:300);
 
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'Montserat'),
       home: Scaffold(
         /* appBar: AppBar(
           title: Text("MyApp"),
@@ -64,8 +65,13 @@ class Splash extends State<SplashScreen>  {
         body: Container(
           decoration: new BoxDecoration(color: Colors.white),
           child: new Center(
-            child: image,
-          ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+            children: [const Text('GreenPoints',
+                style: TextStyle(fontSize: 40, color: Colors.green, fontFamily: 'Raleway', fontWeight: FontWeight.w700)),
+            image]
+          )),
         ), //<- place where the image appears
       ),
     );

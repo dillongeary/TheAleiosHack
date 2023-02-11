@@ -15,7 +15,15 @@ class rewardsScreenState extends State<rewardsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return new Scaffold(
+      body: Image.asset(
+        "assets/rewards_store.png",
+        fit: BoxFit.cover,
+        height: double.infinity,
+        width: double.infinity,
+        alignment: Alignment.center,
+      ),
+    );
   }
 
 

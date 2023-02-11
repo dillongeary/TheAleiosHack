@@ -40,7 +40,7 @@ class leaderboardScreenState extends State<leaderboardScreen> {
               Align(
                   alignment: Alignment.center,
                   child: const Text('GreenPoints',
-                      style: TextStyle(fontSize: 40, color: Colors.green))),
+                      style: TextStyle(fontSize: 40, color: Colors.green, fontFamily: 'Raleway', fontWeight: FontWeight.w700))),
               SizedBox(
                 height: 16,
               ),

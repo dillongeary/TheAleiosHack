@@ -40,7 +40,7 @@ class mainScreenState extends State<mainScreen> {
                 Align(
                     alignment: Alignment.center,
                     child: const Text('GreenPoints',
-                        style: TextStyle(fontSize: 40, color: Colors.green))),
+                        style: TextStyle(fontSize: 40, color: Colors.green, fontFamily: 'Raleway', fontWeight: FontWeight.w700))),
                 Align(
                     alignment: Alignment.center,
                     child: CircleAvatar(
@@ -101,7 +101,7 @@ class mainScreenState extends State<mainScreen> {
                                       builder: (context) => rewardsScreen()));
                             },
                             child: Text(
-                              "Map",
+                              "Rewards",
                               style:
                                   TextStyle(fontSize: 40, color: Colors.black),
                             )))),
