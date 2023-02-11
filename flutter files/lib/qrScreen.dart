@@ -1,16 +1,14 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:collection/collection.dart';
 
 class qrScreen extends StatefulWidget {
-
-
-  qrScreen(
-      {Key? key})
-      : super(key: key);
+  qrScreen({Key? key}) : super(key: key);
 
   @override
   State<qrScreen> createState() => qrScreenState();
@@ -30,6 +28,7 @@ class qrScreenState extends State<qrScreen> {
       });
     });
   }
+
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -76,5 +75,38 @@ class qrScreenState extends State<qrScreen> {
 
   void processQRCode(String? code) {
     //code holds the number eg 5
+
+    //"Starbucks",15612,"Vegan Milk","Reusable Cup"
+    if (code != null) {
+      final split = code.split(",");
+      final Map<int, String> values = {
+        for (int i = 0; i < split.length; i++) i: split[i]
+      };
+
+      final location = values[0];
+      final qrid = values[1];
+
+      int i = 2;
+      List variables = [];
+      while (true) {
+        if (values[i] == null) {
+          break;
+        } else {
+          variables.add(values[i]);
+          i = i + 1;
+        }
+      }
+
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final docRef = db.collection("PointsLookupTable").doc(location);
+      List<int> points = [];
+      docRef.get().then((DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        points = variables.map((variable) => data[variable] as int).toList();
+      });
+
+      final total = points.sum;
+      print(total);
+    }
   }
 }
