@@ -136,12 +136,10 @@ class qrScreenState extends State<qrScreen> {
           };
 
           final qrcRef = db.collection("QRC Log").doc(getUserID() as String);
-          await qrcRef.update({qrid:String:date}).then(
+          await qrcRef.update({qrid as String:date}).then(
             (value) => print("DocumentSnapshot successfully updated!"),
             onError: (e) => print("Error updating document $e"));
-          
         
-
           final docRef = db.collection("PointsLookupTable").doc(location);
           List<int> points = [];
           await docRef.get().then((DocumentSnapshot doc) {
@@ -151,14 +149,48 @@ class qrScreenState extends State<qrScreen> {
           );
 
           total = points.sum;
+
+          //implement database
+          bool existingUser = false;
+          int currentPoints;
+          String name;
+
+          try {
+            final docRef2 = db.collection("Leaderboard");
+
+            var doc = await docRef2.document(getUserID()).get().then((DocumentSnapshot doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              currentPoints = data["points"]
+              name = data["name"]
+            },onError: (e) => print("Error getting document: $e")
+            );
+            existingUser = true;
+          } catch (e) {
+            existingUser = false;
+            currentPoints = 0;
+            name = "Name";
+          }
+
+          int newPoints = currentPoints + total;
+
+          final leaderboardEntry = <String,dynamic>{
+            "name":name,
+            "points":newPoints
+          };
+
+          await db.collection("Leaderboard").doc(getUserID()).set(leaderboardEntry).onError((e, _) => print("Error writing document: $e"));
         } else {
-          total = -1;
+          print("QR code scanned already");
+          //Sian add some nice error message / popup
         }
-        print(total);
       }
   }
 
   int getUserID() {
     return 69; // nice
   }
+
+  String getUserName() {
+    
+  } 
 }
