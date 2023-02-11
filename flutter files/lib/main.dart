@@ -76,7 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => qrScreen()));
+                                setState((){
                                   getUsersScore();
+                                });
                               },
                               child: Text(
                                 "Scan",

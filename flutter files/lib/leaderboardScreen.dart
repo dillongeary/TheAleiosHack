@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,10 @@ class leaderboardScreenState extends State<leaderboardScreen> {
                 valueColor: new AlwaysStoppedAnimation<Color>(
                     Colors.blue), //choose your own color
               ))
-            : Container());
+            : Container(
+          child: Row(
+          ),
+        ));
   }
 
   void getLeaderboard() async {
@@ -41,14 +46,18 @@ class leaderboardScreenState extends State<leaderboardScreen> {
         lb[name] = points;
       });
     }, onError: (e) => print("Error getting document: $e"));
-    print(lb);
-    _loading = false;
 
     // Sort the lb map by points
     var sortedKeys = lb.keys.toList(growable:false)
-    ..sort((k1, k2) => lb[k1].compareTo(temp[k2]));
-    LinkedHashMap sortedMap = new LinkedHashMap
-      .fromIterable(sortedKeys, key: (k) => k, value: (k) => lb[k]);
+      ..sort((k1, k2) => lb[k2]!.compareTo(lb[k1]!));
+    LinkedHashMap<String, int> sortedMap = new LinkedHashMap.fromIterable(sortedKeys, key: (k) => k, value: (k) => lb[k]!);
     lb = sortedMap;
+    print(lb);
+
+    setState((){
+      _loading = false;
+    });
+
+
   }
 }
