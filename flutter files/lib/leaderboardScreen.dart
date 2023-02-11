@@ -52,6 +52,12 @@ class leaderboardScreenState extends State<leaderboardScreen> {
       ..sort((k1, k2) => lb[k2]!.compareTo(lb[k1]!));
     LinkedHashMap<String, int> sortedMap = new LinkedHashMap.fromIterable(sortedKeys, key: (k) => k, value: (k) => lb[k]!);
     lb = sortedMap;
+
+    List names = sortedMap.keys.toList();
+    List points = new List;
+    for (i in names) {
+      points.add(sortedMap[i]);
+    }
     print(lb);
 
     setState((){
