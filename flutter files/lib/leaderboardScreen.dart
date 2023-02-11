@@ -32,22 +32,37 @@ class leaderboardScreenState extends State<leaderboardScreen> {
                     Colors.blue), //choose your own color
               ))
             : Container(
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: names.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 50,
-                  margin: EdgeInsets.all(2),
-                  child: Center(
-                      child: Text('${names[index]}: ${points[index]}',
-                        style: TextStyle(fontSize: 18),
-                      )
-                  ),
-                );
-              }
+          margin: EdgeInsets.all(32),
+
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+              Align(
+                  alignment: Alignment.center,
+                  child: const Text('GreenPoints',
+                      style: TextStyle(fontSize: 40, color: Colors.green))),
+              SizedBox(
+                height: 16,
+              ),
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                itemCount: names.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 50,
+                    margin: EdgeInsets.all(2),
+                    child: Center(
+                        child: Text('${names[index]}: ${points[index]}',
+                          style: TextStyle(fontSize: 30),
+                        )
+                    ),
+                  );
+                }
           )
-          )
+          ]),
+            )
     );
 
   }
