@@ -43,5 +43,12 @@ class leaderboardScreenState extends State<leaderboardScreen> {
     }, onError: (e) => print("Error getting document: $e"));
     print(lb);
     _loading = false;
+
+    // Sort the lb map by points
+    var sortedKeys = lb.keys.toList(growable:false)
+    ..sort((k1, k2) => lb[k1].compareTo(temp[k2]));
+    LinkedHashMap sortedMap = new LinkedHashMap
+      .fromIterable(sortedKeys, key: (k) => k, value: (k) => lb[k]);
+    lb = sortedMap;
   }
 }
