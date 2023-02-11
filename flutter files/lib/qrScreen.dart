@@ -73,9 +73,9 @@ class qrScreenState extends State<qrScreen> {
     super.dispose();
   }
 
-  void processQRCode(String? code) {
+  void processQRCode(String? code) async {
     //code holds the number eg 5
-
+    print("aaa");
     //"Starbucks",15612,"Vegan Milk","Reusable Cup"
     if (code != null) {
       final split = code.split(",");
@@ -96,17 +96,26 @@ class qrScreenState extends State<qrScreen> {
           i = i + 1;
         }
       }
+      print(variables);
+      print(location);
+
 
       FirebaseFirestore db = FirebaseFirestore.instance;
+
       final docRef = db.collection("PointsLookupTable").doc(location);
       List<int> points = [];
-      docRef.get().then((DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        points = variables.map((variable) => data[variable] as int).toList();
-      });
+      await docRef.get().then((DocumentSnapshot doc) {
 
+        final data = doc.data() as Map<String, dynamic>;
+        print("IN THINGY");
+        print(data);
+        points = variables.map((variable) => data[variable] as int).toList();
+      },onError: (e) => print("Error getting document: $e")
+      );
+
+      print(points);
       final total = points.sum;
-      print(total);
+      print(total)
     }
   }
 }
