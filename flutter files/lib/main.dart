@@ -135,6 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
         newScore = data["points"];
       }, onError: (e) => print("Error getting document: $e"));
     } catch (e) {}
+    setState((){
+      newScore;
+    });
   }
 
   int getUserID() {
@@ -149,5 +152,29 @@ class _MyHomePageState extends State<MyHomePage> {
         score = result;
       }
     });
+    if (result == -1) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Unsucessful, QR code invalid"),
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      ));
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Sucessful, " + result.toString() + " is your new score"),
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      ));
+    }
   }
 }
