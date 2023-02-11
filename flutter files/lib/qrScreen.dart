@@ -115,7 +115,7 @@ class qrScreenState extends State<qrScreen> {
 
       print(points);
       final total = points.sum;
-      print(total)
+      print(total);
     }
   }
 }

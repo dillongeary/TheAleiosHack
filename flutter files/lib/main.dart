@@ -29,11 +29,15 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
+
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int score = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 style: TextStyle(
                                     fontSize: 40, color: Colors.white),
                               )))),
+                  Align(
+                      alignment: Alignment.center,
+                              child: Text(
+                                ("Score: " + score.toString()),
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black),
+                              )),
                 ]
             )
         )
