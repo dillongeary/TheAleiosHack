@@ -51,11 +51,12 @@ class leaderboardScreenState extends State<leaderboardScreen> {
                 itemCount: names.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    height: 50,
-                    margin: EdgeInsets.all(2),
+                    color: Colors.green,
+                    height: 65,
+                    margin: EdgeInsets.all(6),
                     child: Center(
                         child: Text('${names[index]}: ${points[index]}',
-                          style: TextStyle(fontSize: 30),
+                          style: TextStyle(fontSize: 30, color: Colors.white),
                         )
                     ),
                   );
